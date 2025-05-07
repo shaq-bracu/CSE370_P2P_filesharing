@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Welcome, {{ username }}!</h2>
+
+<!-- Upload Section -->
+<h3>Upload a File</h3>
+<form action="/upload" method="POST" enctype="multipart/form-data" class="upload-form">
+    <label for="file">Choose a file:</label>
+    <input type="file" id="file" name="file" required>
+    <button type="submit">Upload</button>
+</form>
+
+<!-- Download Section -->
+<h3>Download Files</h3>
+<table class="download-table">
+    <thead>
+        <tr>
+            <th>File Name</th>
+            <th>Uploaded By</th>
+            <th>Download</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for file in files %}
+        <tr>
+            <td>{{ file.file_name }}</td>
+            <td>{{ file.uploaded_by }}</td>
+            <td><a href="{{ url_for('download_file', filename=file.file_name) }}" class="btn-download">Download</a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<!-- Forum Section -->
+<h3>Forum</h3>
+<div class="chatbox">
+    <form action="{{ url_for('forum') }}" method="POST" class="chatbox-form">
+        <textarea name="message" placeholder="Type your message here..." required></textarea>
+        <button type="submit">Send</button>
+    </form>
+    <div class="messages">
+        {% for post in posts %}
+        <div class="message">
+            <p><strong>{{ post[0] }}:</strong> {{ post[1] }}</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
