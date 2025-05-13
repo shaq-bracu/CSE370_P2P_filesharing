@@ -1,24 +1,34 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Peer-to-Peer File Sharing</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Peer-to-Peer File Sharing{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script> <!-- GSAP for animations -->
 </head>
 <body>
-    <header>
-        <h1>Peer-to-Peer File Sharing</h1>
-        <nav>
+    <header class="header">
+        <div class="logo">
+            <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo">
+            <h1>Peer-to-Peer File Sharing</h1>
+        </div>
+        <nav class="nav">
             <a href="{{ url_for('home') }}">Home</a>
-            {% if 'user_id' not in session %}
-                <a href="{{ url_for('login') }}">Login</a>
-                <a href="{{ url_for('signup') }}">Signup</a>
-            {% else %}
-                <a href="{{ url_for('logout') }}">Logout</a>
-            {% endif %}
+            <a href="{{ url_for('logout') }}">Logout</a>
         </nav>
     </header>
-    <main>
+    <main class="main-content">
         {% block content %}{% endblock %}
     </main>
+    <footer class="footer">
+        <p>&copy; 2025 Peer-to-Peer File Sharing. All rights reserved.</p>
+    </footer>
+    <script>
+        // GSAP Animation for Header
+        gsap.from(".header", { duration: 1, y: -50, opacity: 0, ease: "power3.out" });
+        gsap.from(".main-content", { duration: 1, opacity: 0, delay: 0.5, ease: "power3.out" });
+    </script>
 </body>
 </html>

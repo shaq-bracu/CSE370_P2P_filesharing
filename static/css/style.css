@@ -1,10 +1,10 @@
 /* General styles */
 body {
-    font-family: 'Poppins', sans-serif;
-    background-color: #f4f4f4;
+    background-color: #0d1117;
+    color: #c9d1d9;
+    font-family: 'Roboto', Arial, sans-serif;
     margin: 0;
     padding: 0;
-    color: #333;
 }
 
 header {
@@ -30,13 +30,13 @@ header nav a {
 }
 
 header nav a:hover {
-    color: #1f6feb; /* Brighter blue on hover */
+    color: #1f6feb;
 }
 
 .logout-button {
     float: right;
     margin-right: 20px;
-    background-color: #da3633; /* Red for logout button */
+    background-color: #da3633;
     color: white;
     padding: 8px 15px;
     border: none;
@@ -47,7 +47,47 @@ header nav a:hover {
 }
 
 .logout-button:hover {
-    background-color: #f85149; /* Brighter red on hover */
+    background-color: #f85149;
+}
+
+h2, h3 {
+    color: #58a6ff;
+    margin-bottom: 20px;
+}
+
+/* Links */
+a {
+    color: #58a6ff;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Header */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: #161b22;
+    border-bottom: 1px solid #30363d;
+}
+
+.header .logo {
+    display: flex;
+    align-items: center;
+}
+
+.header .logo img {
+    height: 40px;
+    margin-right: 10px;
+}
+
+.header .nav a {
+    margin-left: 20px;
+    font-weight: bold;
 }
 
 /* Main content styles */
@@ -61,9 +101,14 @@ main {
     color: #333;
 }
 
+/* Main Content */
+.main-content {
+    padding: 20px;
+}
+
 /* Buttons */
 button, .btn {
-    background-color: #007bff;
+    background-color: #238636;
     color: white;
     padding: 10px 20px;
     border: none;
@@ -74,7 +119,7 @@ button, .btn {
 }
 
 button:hover, .btn:hover {
-    background-color: #0056b3;
+    background-color: #2ea043;
 }
 
 .btn-delete {
@@ -131,14 +176,14 @@ form input, form textarea, form select {
     width: 100%;
     padding: 12px;
     margin: 10px 0;
-    border: 1px solid #30363d; /* Subtle border */
+    border: 1px solid #30363d;
     border-radius: 5px;
-    background-color: #0d1117; /* Input background matches body */
-    color: #c9d1d9; /* Input text color */
+    background-color: #161b22;
+    color: #c9d1d9;
 }
 
 form input::placeholder, form textarea::placeholder {
-    color: #8b949e; /* Placeholder text color */
+    color: #8b949e;
 }
 
 form input:focus, form textarea:focus, form select:focus {
@@ -147,31 +192,69 @@ form input:focus, form textarea:focus, form select:focus {
     box-shadow: 0 0 5px rgba(88, 166, 255, 0.5);
 }
 
+form button {
+    background-color: #238636;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+form button:hover {
+    background-color: #2ea043;
+}
+
 /* Table styles */
 table {
     width: 100%;
     border-collapse: collapse;
     margin: 20px 0;
-    background-color: #161b22; /* Dark table background */
-    color: #c9d1d9;
-    border-radius: 5px;
-    overflow: hidden;
 }
 
 table th, table td {
+    border: 1px solid #30363d;
     padding: 10px;
     text-align: left;
-    border-bottom: 1px solid #30363d;
 }
 
 table th {
-    background-color: #21262d; /* Darker header background */
+    background-color: #161b22;
     color: #58a6ff;
 }
 
+table td {
+    background-color: #0d1117;
+    color: #c9d1d9;
+}
+
 table tr:hover {
-    background-color: #1f6feb; /* Highlight row on hover */
+    background-color: #1f6feb;
     color: white;
+}
+
+/* Modern Table */
+.modern-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.modern-table th, .modern-table td {
+    padding: 10px;
+    text-align: left;
+    border: 1px solid #30363d;
+}
+
+.modern-table th {
+    background-color: #161b22;
+    color: #58a6ff;
+}
+
+.modern-table td {
+    background-color: #0d1117;
 }
 
 /* Buffering animation */
@@ -196,11 +279,10 @@ table tr:hover {
 
 /* Chatbox styles */
 .chatbox {
-    margin-top: 20px;
-    padding: 15px;
-    border: 1px solid #30363d;
-    border-radius: 5px;
     background-color: #161b22;
+    padding: 20px;
+    border-radius: 5px;
+    margin-top: 20px;
 }
 
 .chatbox h2 {
@@ -224,8 +306,7 @@ chatbox textarea {
     color: #c9d1d9;
 }
 
-chatbox .messages {
-    margin-top: 20px;
+.chatbox .messages {
     max-height: 300px;
     overflow-y: auto;
     border: 1px solid #30363d;
@@ -234,21 +315,20 @@ chatbox .messages {
     background-color: #0d1117;
 }
 
-/* Forum message styles */
 .chatbox .messages .message {
     margin-bottom: 10px;
     padding: 10px;
-    background-color: #21262d; /* Dark background for messages */
+    background-color: #21262d;
     border-radius: 5px;
 }
 
 .chatbox .messages .message p {
     margin: 0;
-    color: #e6e6e6; /* Bright text color for messages */
+    color: #e6e6e6;
 }
 
-.chatbox .messages .message strong {
-    color: #58a6ff; /* Cyan color for usernames */
+chatbox .messages .message strong {
+    color: #58a6ff;
 }
 
 chatbox-form button {
@@ -303,8 +383,8 @@ chatbox-form button:hover {
 
 /* Scrollable Container */
 .scrollable-container {
-    max-height: 300px; /* Set a fixed height for the scrollable area */
-    overflow-y: auto; /* Enable vertical scrolling */
+    max-height: 300px;
+    overflow-y: auto;
     border: 1px solid #30363d;
     border-radius: 5px;
     background-color: #161b22;
@@ -379,7 +459,7 @@ chatbox-form button:hover {
     transition: background-color 0.3s ease;
 }
 
-.search-form button:hover {
+search-form button:hover {
     background-color: #0056b3;
 }
 
@@ -446,4 +526,13 @@ chatbox-form button:hover {
 
 links a:hover {
     text-decoration: underline;
+}
+
+/* Footer */
+footer, .footer {
+    text-align: center;
+    padding: 10px;
+    background-color: #161b22;
+    color: #c9d1d9;
+    margin-top: 20px;
 }
