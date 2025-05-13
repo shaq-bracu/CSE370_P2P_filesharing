@@ -14,7 +14,7 @@
 <!-- Search Section -->
 <h3>Search Files</h3>
 <form action="{{ url_for('home') }}" method="GET" class="search-form">
-    <input type="text" name="query" placeholder="Search by file name..." value="{{ request.args.get('query', '') }}" required>
+    <input type="text" name="query" placeholder="Search by file name..." value="{{ query }}" required>
     <button type="submit">Search</button>
 </form>
 
@@ -33,20 +33,19 @@
         </tr>
     </thead>
     <tbody>
-        {% if session.get('is_admin') %}
-        {% set files_query = "SELECT id, file_name, uploaded_by, is_approved FROM files" %}
-        {% else %}
-        {% set files_query = "SELECT id, file_name, uploaded_by FROM files WHERE is_approved = TRUE" %}
-        {% endif %}
         {% for file in files %}
         <tr>
             <td>{{ file.file_name }}</td>
             <td>{{ file.uploaded_by }}</td>
             <td>
-                {% if file.is_approved %}
-                <a href="{{ url_for('download_file', filename=file.file_name) }}" class="btn-download">Download</a>
+                {% if session.is_admin %}
+                    {% if file.is_approved %}
+                    <a href="{{ url_for('download_file', filename=file.file_name) }}" class="btn-download">Download</a>
+                    {% else %}
+                    <span>Pending Approval</span>
+                    {% endif %}
                 {% else %}
-                <span>Pending Approval</span>
+                <a href="{{ url_for('download_file', filename=file.file_name) }}" class="btn-download">Download</a>
                 {% endif %}
             </td>
             {% if session.is_admin %}

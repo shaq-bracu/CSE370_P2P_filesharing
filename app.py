@@ -91,23 +91,30 @@ def home():
         mysql.connection.commit()
         cur.close()
 
-    # Fetch files
+    # Handle file search
+    query = request.args.get('query', '').strip()
     cur = mysql.connection.cursor()
     if session.get('is_admin'):
         # Admin sees all files
-        cur.execute("SELECT id, file_name, uploaded_by, is_approved FROM files")
+        if query:
+            cur.execute("SELECT id, file_name, uploaded_by, is_approved FROM files WHERE file_name LIKE %s", (f"%{query}%",))
+        else:
+            cur.execute("SELECT id, file_name, uploaded_by, is_approved FROM files")
         files = [{'id': row[0], 'file_name': row[1], 'uploaded_by': row[2], 'is_approved': row[3]} for row in cur.fetchall()]
     else:
         # Regular users see only approved files
-        cur.execute("SELECT id, file_name, uploaded_by FROM files WHERE is_approved = TRUE")
-        files = [{'id': row[0], 'file_name': row[1], 'uploaded_by': row[2], 'is_approved': True} for row in cur.fetchall()]
+        if query:
+            cur.execute("SELECT id, file_name, uploaded_by FROM files WHERE is_approved = TRUE AND file_name LIKE %s", (f"%{query}%",))
+        else:
+            cur.execute("SELECT id, file_name, uploaded_by FROM files WHERE is_approved = TRUE")
+        files = [{'id': row[0], 'file_name': row[1], 'uploaded_by': row[2]} for row in cur.fetchall()]
 
     # Fetch forum posts
     cur.execute("SELECT id, username, message FROM forum_posts ORDER BY posted_at DESC")
     posts = [{'id': row[0], 'username': row[1], 'message': row[2]} for row in cur.fetchall()]
     cur.close()
 
-    return render_template('home.html', username=session['username'], files=files, posts=posts)
+    return render_template('home.html', username=session['username'], files=files, posts=posts, query=query)
 
 @app.route('/upload', methods=['GET', 'POST'])
 def upload_file():
@@ -121,15 +128,20 @@ def upload_file():
             file_path = os.path.join(app.config['UPLOAD_FOLDER'], file_name)
             file.save(file_path)
 
+            is_approved = session.get('is_admin', False)  # Automatically approve if the uploader is an admin
+
             cur = mysql.connection.cursor()
             cur.execute(
                 "INSERT INTO files (file_name, file_path, uploaded_by, is_approved) VALUES (%s, %s, %s, %s)",
-                (file_name, file_path, session['username'], False)
+                (file_name, file_path, session['username'], is_approved)
             )
             mysql.connection.commit()
             cur.close()
 
-            return "File uploaded successfully! Pending admin approval."
+            if is_approved:
+                return "File uploaded successfully and approved!"
+            else:
+                return "File uploaded successfully! Pending admin approval."
     return redirect(url_for('home'))
 
 @app.route('/download', methods=['GET'])

@@ -12,14 +12,12 @@ CREATE TABLE IF NOT EXISTS files (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     file_name TEXT NOT NULL,
     file_path TEXT NOT NULL,
-    uploaded_by TEXT NOT NULL DEFAULT 'unknown',
-    uploaded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    uploaded_by TEXT NOT NULL DEFAULT 'unknown',   
     is_approved BOOLEAN DEFAULT FALSE
 );
 
 CREATE TABLE IF NOT EXISTS forum_posts (
     id INT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(255) NOT NULL,
-    message TEXT NOT NULL,
-    posted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    message TEXT NOT NULL,    
 );
