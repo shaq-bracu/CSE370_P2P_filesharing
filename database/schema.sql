@@ -1,8 +1,9 @@
 CREATE TABLE IF NOT EXISTS users (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    username VARCHAR(255) NOT NULL,
-    email VARCHAR(255) UNIQUE NOT NULL,
-    password VARCHAR(255) NOT NULL
+    username VARCHAR(50) NOT NULL,
+    email VARCHAR(50) UNIQUE NOT NULL,
+    password VARCHAR(50) NOT NULL,
+    is_admin BOOLEAN DEFAULT FALSE
 );
 
 DROP TABLE IF EXISTS files;
@@ -12,7 +13,8 @@ CREATE TABLE IF NOT EXISTS files (
     file_name TEXT NOT NULL,
     file_path TEXT NOT NULL,
     uploaded_by TEXT NOT NULL DEFAULT 'unknown',
-    uploaded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    uploaded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    is_approved BOOLEAN DEFAULT FALSE
 );
 
 CREATE TABLE IF NOT EXISTS forum_posts (

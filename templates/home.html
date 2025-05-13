@@ -11,6 +11,13 @@
     <button type="submit">Upload</button>
 </form>
 
+<!-- Search Section -->
+<h3>Search Files</h3>
+<form action="{{ url_for('home') }}" method="GET" class="search-form">
+    <input type="text" name="query" placeholder="Search by file name..." value="{{ request.args.get('query', '') }}" required>
+    <button type="submit">Search</button>
+</form>
+
 <!-- Download Section -->
 <h3>Download Files</h3>
 <table class="download-table">
@@ -19,14 +26,42 @@
             <th>File Name</th>
             <th>Uploaded By</th>
             <th>Download</th>
+            {% if session.is_admin %}
+            <th>Status</th>
+            <th>Action</th>
+            {% endif %}
         </tr>
     </thead>
     <tbody>
+        {% if session.get('is_admin') %}
+        {% set files_query = "SELECT id, file_name, uploaded_by, is_approved FROM files" %}
+        {% else %}
+        {% set files_query = "SELECT id, file_name, uploaded_by FROM files WHERE is_approved = TRUE" %}
+        {% endif %}
         {% for file in files %}
         <tr>
             <td>{{ file.file_name }}</td>
             <td>{{ file.uploaded_by }}</td>
-            <td><a href="{{ url_for('download_file', filename=file.file_name) }}" class="btn-download">Download</a></td>
+            <td>
+                {% if file.is_approved %}
+                <a href="{{ url_for('download_file', filename=file.file_name) }}" class="btn-download">Download</a>
+                {% else %}
+                <span>Pending Approval</span>
+                {% endif %}
+            </td>
+            {% if session.is_admin %}
+            <td>{{ "Approved" if file.is_approved else "Pending" }}</td>
+            <td>
+                {% if not file.is_approved %}
+                <form action="{{ url_for('approve_file', file_id=file.id) }}" method="POST" style="display:inline;">
+                    <button type="submit" class="btn-approve">Approve</button>
+                </form>
+                <form action="{{ url_for('reject_file', file_id=file.id) }}" method="POST" style="display:inline;">
+                    <button type="submit" class="btn-reject">Reject</button>
+                </form>
+                {% endif %}
+            </td>
+            {% endif %}
         </tr>
         {% endfor %}
     </tbody>
@@ -35,14 +70,19 @@
 <!-- Forum Section -->
 <h3>Forum</h3>
 <div class="chatbox">
-    <form action="{{ url_for('forum') }}" method="POST" class="chatbox-form">
+    <form action="{{ url_for('home') }}" method="POST" class="chatbox-form">
         <textarea name="message" placeholder="Type your message here..." required></textarea>
-        <button type="submit">Send</button>
+        <button type="submit" class="btn-login">Send</button>
     </form>
     <div class="messages">
         {% for post in posts %}
         <div class="message">
-            <p><strong>{{ post[0] }}:</strong> {{ post[1] }}</p>
+            <p><strong>{{ post.username }}:</strong> {{ post.message }}</p>
+            {% if session.is_admin %}
+            <form action="{{ url_for('delete_message', message_id=post.id) }}" method="POST" style="display:inline;">
+                <button type="submit" class="btn-delete">Delete</button>
+            </form>
+            {% endif %}
         </div>
         {% endfor %}
     </div>
